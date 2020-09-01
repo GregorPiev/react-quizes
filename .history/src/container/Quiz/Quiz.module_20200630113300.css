@@ -1,0 +1,20 @@
+.Quiz {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  border: solid 2px maroon;
+  width: 100%;
+  background: linear-gradient(
+    45deg,
+    rgb(0, 183, 255) 0%,
+    rgb(42, 42, 180) 100%
+  );
+}
+.Quiz h2 {
+  color: white;
+  margin-left: 10px;
+  margin-top: 60px;
+}
+.QuizWrapper {
+  width: 600px;
+}

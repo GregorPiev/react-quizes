@@ -1,0 +1,6 @@
+.Quiz {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  border: solid 2px maroon;
+}

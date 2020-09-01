@@ -1,0 +1,12 @@
+.Quiz {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  border: solid 2px maroon;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgb(0, 183, 255) 0%,
+    rgb(42, 42, 180) 100%
+  );
+}
