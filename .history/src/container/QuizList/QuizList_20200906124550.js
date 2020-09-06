@@ -7,7 +7,7 @@ import { fetchQuizes } from '../../store/actions/quiz';
 
 class QuizList extends React.Component {
     renderQuizes() {
-        return this.props.quizes.map((quiz, index) => {
+        return this.props.quizes.map((quiz) => {
             return (
                 <li key={quiz.id}>
                     <NavLink to={'/quiz/' + quiz.id}>{quiz.name}</NavLink>
@@ -39,7 +39,7 @@ function mapStateToProps(state) {
     return {
         quizes: state.quizes.quizes,
         loading: state.quizes.loading,
-        activeQuestion: state.quizes.activeQuestion
+        activeQuestion: state.quizes.loading
     }
 }
 

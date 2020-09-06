@@ -23,12 +23,13 @@ class Quiz extends React.Component {
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
                     <h2>Do answer to all questions</h2>
-                    {this.props.loading || this.props.quiz === null
+
+                    {this.props.quiz === null
                         ? <Loader />
                         : this.props.isFinished
                             ? <FinishQuiz
                                 results={this.props.results}
-                                quizes={this.props.quizes}
+                                quiz={this.props.quiz}
                                 retryHandler={this.props.retryQuiz}
                             />
                             : <ActiveQuiz
@@ -48,12 +49,11 @@ class Quiz extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        results: state.quizes.results,
+        results: state.quizes.quiz,
         isFinished: state.quizes.isFinished,
         activeQuestion: state.quizes.activeQuestion,
         answerState: state.quizes.answerState,
         quiz: state.quizes.quiz,
-        quizes: state.quizes.quizes,
         loading: state.quizes.loading,
     };
 }

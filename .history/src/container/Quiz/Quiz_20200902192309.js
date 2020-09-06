@@ -48,12 +48,11 @@ class Quiz extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        results: state.quizes.results,
+        results: state.quizes.quiz,
         isFinished: state.quizes.isFinished,
         activeQuestion: state.quizes.activeQuestion,
         answerState: state.quizes.answerState,
         quiz: state.quizes.quiz,
-        quizes: state.quizes.quizes,
         loading: state.quizes.loading,
     };
 }

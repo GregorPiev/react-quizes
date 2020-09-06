@@ -1,5 +1,4 @@
 import axios from '../../axios/axios-quiz';
-import { useHistory } from "react-router-dom";
 import {
     FETCH_QUIZES_START,
     FETCH_QUIZES_SUCCESS,
@@ -10,7 +9,6 @@ import {
     QUIZ_NEXT_QUESTIONS,
     Retry_Quiz
 } from './actionTypes';
-
 
 export function fetchQuizes() {
     return async (dispatch) => {
@@ -32,19 +30,13 @@ export function fetchQuizes() {
 }
 
 export function fetchQuizById(quizId) {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         dispatch(fetchQuizesStart());
         try {
             const response = await axios.get(`/quizes/${quizId}.json`);
             const quiz = response.data;
-            const state = getState().quizes;
-            const position = state.quizes.findIndex(q => {
-                return q.id === quizId
-            })
-            dispatch(fetchQuizSuccess(quiz, position));
+            dispatch(fetchQuizSuccess(quiz));
         } catch (error) {
-            const history = useHistory();
-            history.push('/');
             dispatch(fetchQuizesError(error));
         }
     };
@@ -70,11 +62,10 @@ export function fetchQuizesError(er) {
     };
 }
 
-export function fetchQuizSuccess(quiz, position) {
+export function fetchQuizSuccess(quiz) {
     return {
         type: FETCH_QUIZ_SUCCESS,
         quiz,
-        activeQuestion: position
     };
 }
 
@@ -91,16 +82,17 @@ export function finishQuiz() {
     }
 }
 
-export function quizNextQuestions(number, quiz) {
+export function quizNextQuestions(number) {
     return {
         type: QUIZ_NEXT_QUESTIONS,
-        number, quiz
+        number
     }
 }
 
 export function quizAnswerClick(answerId) {
     return (dispatch, getState) => {
         const state = getState().quizes;
+        console.log('State: ', state)
         if (state.answerState) {
             const key = Object.keys(state.answerState)[0];
             if (state.answerState[key] === 'success') {
@@ -111,12 +103,12 @@ export function quizAnswerClick(answerId) {
         const results = state.results;
         const question = state.quiz[state.activeQuestion];
         if (question.rightAnswerId === answerId) {
-            if (!results[state.quizes[state.activeQuestion].id]) {
-                results[state.quizes[state.activeQuestion].id] = 'success';
+            if (!results[question.id]) {
+                results[question.id] = 'success';
             }
             dispatch(quizSetState({ [answerId]: 'success' }, results));
         } else {
-            results[state.quizes[state.activeQuestion].id] = 'error';
+            results[question.id] = 'error';
             dispatch(quizSetState({ [answerId]: 'error' }, results));
         }
 
@@ -125,12 +117,10 @@ export function quizAnswerClick(answerId) {
             if (isQuizFinished(state)) {
                 dispatch(finishQuiz());
             } else {
-                dispatch(fetchQuizesStart());
-                const nextActiveQuestion = state.activeQuestion + 1;
-                const nextQiuz = state.quizes[nextActiveQuestion];
-                getNextQuizValue(nextQiuz.id).then(quiz => {
-                    dispatch(quizNextQuestions(nextActiveQuestion, quiz));
-                });
+                console.log(`Next Question: `, state.activeQuestion + 1)
+                const nextQiuzId = state.quizes[state.activeQuestion + 1];
+                dispatch(fetchQuizById(nextQiuzId));
+                dispatch(quizNextQuestions(state.activeQuestion + 1))
             }
             clearTimeout(timeout);
         }, 1000);
@@ -138,17 +128,9 @@ export function quizAnswerClick(answerId) {
 }
 
 function isQuizFinished(state) {
+    console.log('length:', state.quizes.length);
+    console.log('activeQuestion: ', state.activeQuestion)
     return state.activeQuestion + 1 === state.quizes.length;
-}
-
-async function getNextQuizValue(quizId, nextActiveQuestion) {
-    try {
-        const response = await axios.get(`/quizes/${quizId}.json`);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-
 }
 
 export function retryQuiz() {

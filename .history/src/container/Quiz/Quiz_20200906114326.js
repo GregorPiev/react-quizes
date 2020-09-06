@@ -26,19 +26,20 @@ class Quiz extends React.Component {
                     {this.props.loading || this.props.quiz === null
                         ? <Loader />
                         : this.props.isFinished
+                            {console.log(this.props)}
                             ? <FinishQuiz
-                                results={this.props.results}
-                                quizes={this.props.quizes}
-                                retryHandler={this.props.retryQuiz}
-                            />
+                        results={this.props.results}
+                        quizes={this.props.quizes}
+                        retryHandler={this.props.retryQuiz}
+                    />
                             : <ActiveQuiz
-                                answers={this.props.quiz[this.props.activeQuestion].answers}
-                                question={this.props.quiz[this.props.activeQuestion].question}
-                                quizLength={this.props.quiz.length}
-                                answerNumber={this.props.activeQuestion + 1}
-                                state={this.props.answerState}
-                                onAnswerClick={this.props.quizAnswerClick}
-                            />
+                        answers={this.props.quiz[this.props.activeQuestion].answers}
+                        question={this.props.quiz[this.props.activeQuestion].question}
+                        quizLength={this.props.quiz.length}
+                        answerNumber={this.props.activeQuestion + 1}
+                        state={this.props.answerState}
+                        onAnswerClick={this.props.quizAnswerClick}
+                    />
                     }
                 </div>
             </div>
@@ -48,12 +49,11 @@ class Quiz extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        results: state.quizes.results,
+        results: state.quizes.quiz,
         isFinished: state.quizes.isFinished,
         activeQuestion: state.quizes.activeQuestion,
         answerState: state.quizes.answerState,
         quiz: state.quizes.quiz,
-        quizes: state.quizes.quizes,
         loading: state.quizes.loading,
     };
 }

@@ -4,6 +4,7 @@ import Button from '../UI/Button/Button';
 import { Link } from 'react-router-dom'
 
 const FinishQuiz = props => {
+    console.log('Props Source:', props)
     const successResult = Object.keys(props.results)
         .reduce((total, key) => {
             if (props.results[key] === 'success') {
@@ -14,13 +15,17 @@ const FinishQuiz = props => {
 
     return (
         <div className={classes.FinishedQuiz}>
+            {console.log(props)}
+            {console.log(!!props.quizes)}
             <ul>
                 {
                     props.quizes !== undefined
                         ? props.quizes.map((quizItem, index) => {
+                            console.log('quizItem:', quizItem);
+                            console.log('results:', props.results[quizItem.id]);
                             const cls = [
                                 'fa',
-                                props.results[quizItem.id] === undefined
+                                !props.results[quizItem.id]
                                     ? 'fa-square-o'
                                     : props.results[quizItem.id] === 'error'
                                         ? 'fa-times'

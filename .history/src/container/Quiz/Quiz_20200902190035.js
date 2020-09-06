@@ -16,6 +16,7 @@ class Quiz extends React.Component {
         this.props.retryQuiz();
     }
     async componentDidMount() {
+        console.log('Id quiz:', this.props.match.params.id)
         this.props.fetchQuizById(this.props.match.params.id);
     }
     render() {
@@ -28,7 +29,7 @@ class Quiz extends React.Component {
                         : this.props.isFinished
                             ? <FinishQuiz
                                 results={this.props.results}
-                                quizes={this.props.quizes}
+                                quiz={this.props.quizes}
                                 retryHandler={this.props.retryQuiz}
                             />
                             : <ActiveQuiz
@@ -48,12 +49,11 @@ class Quiz extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        results: state.quizes.results,
+        results: state.quizes.quiz,
         isFinished: state.quizes.isFinished,
         activeQuestion: state.quizes.activeQuestion,
         answerState: state.quizes.answerState,
         quiz: state.quizes.quiz,
-        quizes: state.quizes.quizes,
         loading: state.quizes.loading,
     };
 }

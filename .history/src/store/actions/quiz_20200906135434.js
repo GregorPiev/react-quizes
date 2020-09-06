@@ -1,5 +1,4 @@
 import axios from '../../axios/axios-quiz';
-import { useHistory } from "react-router-dom";
 import {
     FETCH_QUIZES_START,
     FETCH_QUIZES_SUCCESS,
@@ -10,7 +9,6 @@ import {
     QUIZ_NEXT_QUESTIONS,
     Retry_Quiz
 } from './actionTypes';
-
 
 export function fetchQuizes() {
     return async (dispatch) => {
@@ -43,8 +41,6 @@ export function fetchQuizById(quizId) {
             })
             dispatch(fetchQuizSuccess(quiz, position));
         } catch (error) {
-            const history = useHistory();
-            history.push('/');
             dispatch(fetchQuizesError(error));
         }
     };
@@ -101,6 +97,9 @@ export function quizNextQuestions(number, quiz) {
 export function quizAnswerClick(answerId) {
     return (dispatch, getState) => {
         const state = getState().quizes;
+        console.log('quizAnswerClick state:', state)
+
+
         if (state.answerState) {
             const key = Object.keys(state.answerState)[0];
             if (state.answerState[key] === 'success') {
@@ -109,7 +108,13 @@ export function quizAnswerClick(answerId) {
         }
 
         const results = state.results;
+        console.log('quizAnswerClick quiz:', state.quiz);
+
+
         const question = state.quiz[state.activeQuestion];
+        console.log('quizAnswerClick question:', state.question);
+
+
         if (question.rightAnswerId === answerId) {
             if (!results[state.quizes[state.activeQuestion].id]) {
                 results[state.quizes[state.activeQuestion].id] = 'success';
@@ -128,6 +133,9 @@ export function quizAnswerClick(answerId) {
                 dispatch(fetchQuizesStart());
                 const nextActiveQuestion = state.activeQuestion + 1;
                 const nextQiuz = state.quizes[nextActiveQuestion];
+
+                console.log('quizAnswerClick nextQiuz:', nextQiuz)
+
                 getNextQuizValue(nextQiuz.id).then(quiz => {
                     dispatch(quizNextQuestions(nextActiveQuestion, quiz));
                 });
@@ -142,6 +150,7 @@ function isQuizFinished(state) {
 }
 
 async function getNextQuizValue(quizId, nextActiveQuestion) {
+
     try {
         const response = await axios.get(`/quizes/${quizId}.json`);
         return response.data;

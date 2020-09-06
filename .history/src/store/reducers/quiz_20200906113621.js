@@ -38,10 +38,7 @@ export default function quizReducer(state = initialState, action) {
             }
         case FETCH_QUIZ_SUCCESS:
             return {
-                ...state,
-                loading: false,
-                quiz: action.quiz,
-                activeQuestion: action.activeQuestion
+                ...state, loading: false, quiz: action.quiz
             }
         case QUIZ_SET_STATE:
             return {
@@ -50,6 +47,8 @@ export default function quizReducer(state = initialState, action) {
                 results: action.results
             }
         case FINISH_QUIZ:
+            console.log('Results:', state.results)
+            console.log('Quizes:', state.quizes)
             return {
                 ...state,
                 isFinished: true

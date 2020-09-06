@@ -11,7 +11,7 @@ import {
     Retry_Quiz
 } from './actionTypes';
 
-
+const history = useHistory();
 export function fetchQuizes() {
     return async (dispatch) => {
         dispatch(fetchQuizesStart());
@@ -43,8 +43,7 @@ export function fetchQuizById(quizId) {
             })
             dispatch(fetchQuizSuccess(quiz, position));
         } catch (error) {
-            const history = useHistory();
-            history.push('/');
+            this.history.push('/');
             dispatch(fetchQuizesError(error));
         }
     };
@@ -128,6 +127,9 @@ export function quizAnswerClick(answerId) {
                 dispatch(fetchQuizesStart());
                 const nextActiveQuestion = state.activeQuestion + 1;
                 const nextQiuz = state.quizes[nextActiveQuestion];
+
+                console.log('quizAnswerClick nextQiuz:', nextQiuz)
+
                 getNextQuizValue(nextQiuz.id).then(quiz => {
                     dispatch(quizNextQuestions(nextActiveQuestion, quiz));
                 });
@@ -142,6 +144,7 @@ function isQuizFinished(state) {
 }
 
 async function getNextQuizValue(quizId, nextActiveQuestion) {
+
     try {
         const response = await axios.get(`/quizes/${quizId}.json`);
         return response.data;

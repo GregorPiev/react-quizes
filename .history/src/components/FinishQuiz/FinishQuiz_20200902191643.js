@@ -11,20 +11,20 @@ const FinishQuiz = props => {
             }
             return total;
         }, 0);
-
     return (
         <div className={classes.FinishedQuiz}>
+            {console.log(props)}
+            {console.log(!!props.quiz)}
             <ul>
                 {
-                    props.quizes !== undefined
-                        ? props.quizes.map((quizItem, index) => {
+                    props.quiz !== undefined
+                        ? props.quiz.map((quizItem, index) => {
+                            console.log('quizItem:', quizItem);
                             const cls = [
                                 'fa',
-                                props.results[quizItem.id] === undefined
-                                    ? 'fa-square-o'
-                                    : props.results[quizItem.id] === 'error'
-                                        ? 'fa-times'
-                                        : 'fa-check',
+                                props.results[quizItem.id] === 'error'
+                                    ? 'fa-times'
+                                    : 'fa-check',
                                 classes[props.results[quizItem.id]]
                             ]
 
@@ -36,11 +36,11 @@ const FinishQuiz = props => {
                                 </li>
                             )
 
-                        }) : null
+                        })
                 }
             </ul>
 
-            <p>Right {successResult} from {props.quizes.length}</p>
+            <p>Right {successResult} from {props.quiz.length}</p>
             <Button
                 type={'primary'}
                 onClick={props.retryHandler}
