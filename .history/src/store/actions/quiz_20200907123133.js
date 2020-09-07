@@ -56,10 +56,11 @@ export function fetchQuizesStart() {
     };
 }
 
-export function fetchQuizesSuccess(quizes) {
+export function fetchQuizesSuccess(quizes, pos) {
     return {
         type: FETCH_QUIZES_SUCCESS,
-        quizes
+        quizes,
+        activeQuestion: pos
     };
 }
 

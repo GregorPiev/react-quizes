@@ -41,6 +41,13 @@ const FinishQuiz = props => {
             </ul>
 
             <p>Right {successResult} from {props.quizes.length}</p>
+            /* <Button
+                type={'primary'}
+                onClick={props.retryHandler}
+            >
+                Repeat
+            </Button> */
+
             <Link to="/">
                 <Button type={'success'}>Go to the test list</Button>
             </Link>
