@@ -5,8 +5,7 @@ import { createControl, validate, validateForm } from '../../form/formFramework'
 import Input from '../../components/UI/Input/Input';
 import Select from '../../components/UI/Select/Select';
 import Auxillary from '../../hoc/Auxillary/Auxillary';
-import axios from '../../axios/axios-quiz';
-import { connect } from 'redux'
+import { connect } from 'react-redux'
 import { createQuizQuestion, finishCreateQuiz } from '../../store/actions/create';
 
 function createOptionControl(number) {
@@ -36,15 +35,12 @@ function createFormControls() {
 }
 
 class QuizCreator extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            rightAnswerId: 1,
-            isFormValid: false,
-            formControls: createFormControls()
-        }
+    state = {
+        rightAnswerId: 1,
+        isFormValid: false,
+        formControls: createFormControls()
     }
+
 
     submitHandler = event => {
         event.preventDefault();
@@ -74,17 +70,13 @@ class QuizCreator extends React.Component {
 
     createQuizHandler = event => {
         event.preventDefault()
-        try {
-            axios.post(`/quizes.json`, this.state.quiz);
-            this.setState({
-                rightAnswerId: 1,
-                isFormValid: false,
-                formControls: createFormControls()
-            })
-            this.props.finishCreateQuiz();
-        } catch (error) {
-            console.error('Error Save quiz:', error);
-        }
+
+        this.setState({
+            rightAnswerId: 1,
+            isFormValid: false,
+            formControls: createFormControls()
+        })
+        this.props.finishCreateQuiz();
     }
 
     changeHandler = (value, controlName) => {

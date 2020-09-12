@@ -35,15 +35,12 @@ function createFormControls() {
 }
 
 class QuizCreator extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            rightAnswerId: 1,
-            isFormValid: false,
-            formControls: createFormControls()
-        }
+    state = {
+        rightAnswerId: 1,
+        isFormValid: false,
+        formControls: createFormControls()
     }
+
 
     submitHandler = event => {
         event.preventDefault();
@@ -54,7 +51,7 @@ class QuizCreator extends React.Component {
         const { question, option1, option2, option3, option4 } = this.state.formControls;
         const questionItem = {
             question: question.value,
-            id: this.props.quiz.length + 1,
+            id: this.props.quizes.length + 1,
             rightAnswerId: this.state.rightAnswerId,
             answers: [
                 { text: option1.value, id: option1.id },
@@ -169,7 +166,8 @@ class QuizCreator extends React.Component {
 }
 function mapStateToProps(state) {
     return {
-        quiz: state.create.quiz
+        quiz: state.create.quiz,
+        quizes: state.quizes.quizes
     }
 }
 function mapDispatchToProps(dispatch) {
