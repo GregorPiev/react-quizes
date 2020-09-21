@@ -32,7 +32,7 @@ export default function quizReducer(state = initialState, action) {
                 ...state,
                 loading: false,
                 quizes: action.quizes,
-                quizItems: action.quizItems,
+                quiz: action.quiz,
             }
         case FETCH_QUIZES_ERROR:
             return {
@@ -42,8 +42,8 @@ export default function quizReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                activeQuestion: action.position,
-
+                quiz: action.quiz,
+                activeQuestion: action.activeQuestion
             }
         case QUIZ_SET_STATE:
             return {

@@ -19,12 +19,14 @@ export function fetchQuizes() {
             const quizes = [];
             const quizItems = [];
             Object.keys(response.data).forEach((key, index) => {
+                console.log('Item: ', response.data[key])
                 quizes.push({
                     id: key,
                     name: `Test N${index + 1}`,
                 });
                 quizItems.push(response.data[key][0])
             });
+            console.log('quizItems: ', quizItems)
             dispatch(fetchQuizesSuccess(quizes, quizItems));
         } catch (error) {
             dispatch(fetchQuizesError(error));
@@ -121,8 +123,15 @@ export function quizAnswerClick(answerId) {
             if (isQuizFinished(state)) {
                 dispatch(finishQuiz());
             } else {
+                // dispatch(fetchQuizesStart());
+
                 const nextActiveQuestion = state.activeQuestion + 1;
                 dispatch(quizNextQuestions(nextActiveQuestion));
+
+                /* const nextQiuz = state.quizes[nextActiveQuestion];
+                getNextQuizValue(nextQiuz.id).then(quiz => {
+                    dispatch(quizNextQuestions(nextActiveQuestion, quiz));
+                }); */
             }
             clearTimeout(timeout);
         }, 1000);

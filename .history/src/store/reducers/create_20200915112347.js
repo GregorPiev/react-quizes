@@ -8,8 +8,7 @@ export default function createReducer(state = initialState, action) {
         case Create_Quiz_Question:
             return {
                 ...state,
-                quiz: [...state.quiz, action.item],
-                lastId: action.lastId
+                quiz: [...state.quiz, action.item]
             }
         case Reset_Quiz_Creation:
             return {

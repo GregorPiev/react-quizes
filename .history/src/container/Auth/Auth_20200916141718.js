@@ -5,7 +5,7 @@ import Input from '../../components/UI/Input/Input';
 import * as is from 'is_js';
 import { connect } from 'react-redux';
 import { auth } from '../../store/actions/auth';
-// import { null } from 'is_js';
+import { null } from 'is_js';
 
 class Auth extends React.Component {
     state = {

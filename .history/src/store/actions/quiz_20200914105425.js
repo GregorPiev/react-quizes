@@ -1,4 +1,5 @@
 import axios from '../../axios/axios-quiz';
+import { useHistory } from "react-router-dom";
 import {
     FETCH_QUIZES_START,
     FETCH_QUIZES_SUCCESS,
@@ -17,15 +18,17 @@ export function fetchQuizes() {
         try {
             const response = await axios.get(`quizes.json`);
             const quizes = [];
-            const quizItems = [];
+            const quiz = [];
             Object.keys(response.data).forEach((key, index) => {
+                console.log('Item: ', response.data[key])
                 quizes.push({
                     id: key,
                     name: `Test N${index + 1}`,
                 });
-                quizItems.push(response.data[key][0])
+                quiz.push(response.data[key])
             });
-            dispatch(fetchQuizesSuccess(quizes, quizItems));
+            console.log('Quiz: ', quiz)
+            dispatch(fetchQuizesSuccess(quizes));
         } catch (error) {
             dispatch(fetchQuizesError(error));
         }
@@ -35,13 +38,18 @@ export function fetchQuizes() {
 export function fetchQuizById(quizId) {
     return async (dispatch, getState) => {
         dispatch(fetchQuizesStart());
-        const quizes = getState().quizes;
-        const position = quizes.quizes.findIndex(q => q.id === quizId);
-        console.log('Position:', position);
-        if (position !== -1) {
-            dispatch(fetchQuizSuccess(position));
-        } else {
-            dispatch(fetchQuizesError('error'));
+        try {
+            const response = await axios.get(`/quizes/${quizId}.json`);
+            const quiz = response.data;
+            const state = getState().quizes;
+            const position = state.quizes.findIndex(q => {
+                return q.id === quizId
+            })
+            dispatch(fetchQuizSuccess(quiz, position));
+        } catch (error) {
+            const history = useHistory();
+            history.push('/');
+            dispatch(fetchQuizesError(error));
         }
     };
 }
@@ -52,11 +60,10 @@ export function fetchQuizesStart() {
     };
 }
 
-export function fetchQuizesSuccess(quizes, quizItems) {
+export function fetchQuizesSuccess(quizes) {
     return {
         type: FETCH_QUIZES_SUCCESS,
-        quizes,
-        quizItems
+        quizes
     };
 }
 
@@ -67,10 +74,11 @@ export function fetchQuizesError(er) {
     };
 }
 
-export function fetchQuizSuccess(position) {
+export function fetchQuizSuccess(quiz, position) {
     return {
         type: FETCH_QUIZ_SUCCESS,
-        position
+        quiz,
+        activeQuestion: position
     };
 }
 
@@ -87,10 +95,10 @@ export function finishQuiz() {
     }
 }
 
-export function quizNextQuestions(number) {
+export function quizNextQuestions(number, quiz) {
     return {
         type: QUIZ_NEXT_QUESTIONS,
-        number
+        number, quiz
     }
 }
 
@@ -105,7 +113,7 @@ export function quizAnswerClick(answerId) {
         }
 
         const results = state.results;
-        const question = state.quizItems[state.activeQuestion];
+        const question = state.quiz[state.activeQuestion];
         if (question.rightAnswerId === answerId) {
             if (!results[state.quizes[state.activeQuestion].id]) {
                 results[state.quizes[state.activeQuestion].id] = 'success';
@@ -121,8 +129,12 @@ export function quizAnswerClick(answerId) {
             if (isQuizFinished(state)) {
                 dispatch(finishQuiz());
             } else {
+                dispatch(fetchQuizesStart());
                 const nextActiveQuestion = state.activeQuestion + 1;
-                dispatch(quizNextQuestions(nextActiveQuestion));
+                const nextQiuz = state.quizes[nextActiveQuestion];
+                getNextQuizValue(nextQiuz.id).then(quiz => {
+                    dispatch(quizNextQuestions(nextActiveQuestion, quiz));
+                });
             }
             clearTimeout(timeout);
         }, 1000);
@@ -131,6 +143,16 @@ export function quizAnswerClick(answerId) {
 
 function isQuizFinished(state) {
     return state.activeQuestion + 1 === state.quizes.length;
+}
+
+async function getNextQuizValue(quizId, nextActiveQuestion) {
+    try {
+        const response = await axios.get(`/quizes/${quizId}.json`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 export function retryQuiz() {

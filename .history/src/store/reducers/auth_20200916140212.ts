@@ -1,0 +1,3 @@
+const initialSate = {
+    token: null
+}

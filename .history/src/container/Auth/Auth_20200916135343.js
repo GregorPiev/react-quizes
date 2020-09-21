@@ -3,9 +3,8 @@ import classes from "./Auth.module.css"
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import * as is from 'is_js';
+import axios from 'axios';
 import { connect } from 'react-redux';
-import { auth } from '../../store/actions/auth';
-// import { null } from 'is_js';
 
 class Auth extends React.Component {
     state = {
@@ -38,20 +37,35 @@ class Auth extends React.Component {
         }
     };
 
-    loginHandler = () => {
-        this.props.auth(
-            this.state.formControls.email.value,
-            this.state.formControls.password.value,
-            true
-        );
+    loginHandler = async () => {
+        const authData = {
+            email: this.state.formControls.email.value,
+            password: this.state.formControls.password.value,
+            returnSecureToken: true
+        }
+        try {
+            const response = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC9bn9cl3_alPi5I-wRJkKKBK9xSDI1ACc`, authData);
+            console.log('Login:', response);
+
+        } catch (error) {
+            console.error('Auth error:', console.error());
+        }
     }
 
-    registerHandler = () => {
-        this.props.auth(
-            this.state.formControls.email.value,
-            this.state.formControls.password.value,
-            false
-        );
+    registerHandler = async () => {
+        const authData = {
+            email: this.state.formControls.email.value,
+            password: this.state.formControls.password.value,
+            returnSecureToken: true
+        }
+        try {
+            const response = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC9bn9cl3_alPi5I-wRJkKKBK9xSDI1ACc`, authData);
+            console.log('Auth:', response);
+
+        } catch (error) {
+            console.error('Auth error:', console.error());
+        }
+
     }
 
     submitHandler = (event) => {
@@ -147,10 +161,14 @@ class Auth extends React.Component {
         );
     }
 }
-
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
     return {
-        auth: (email, password, isLogin) => dispatch(auth(email, password, isLogin))
+
     }
 }
-export default connect(null, mapDispatchToProps)(Auth);
+function mapDispatchToProps(dispatch) {
+    return {
+
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

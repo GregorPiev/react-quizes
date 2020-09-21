@@ -42,7 +42,7 @@ export default function quizReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                activeQuestion: action.position,
+                quizItems: action.quiz,
 
             }
         case QUIZ_SET_STATE:

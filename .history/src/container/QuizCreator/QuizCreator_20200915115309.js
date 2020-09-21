@@ -36,24 +36,15 @@ function createFormControls() {
 }
 
 class QuizCreator extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rightAnswerId: 1,
-            isFormValid: false,
-            formControls: createFormControls()
-        }
-        this.newId = 0;
+    state = {
+        rightAnswerId: 1,
+        isFormValid: false,
+        formControls: createFormControls()
     }
-
 
     componentDidMount() {
         this.props.fetchQuizes();
-        if (this.props.quizItems.length === 0) {
-            this.newId = this.props.lastId + 1;
-        } else {
-            this.newId = this.props.quizItems[this.props.quizItems.length - 1].id + 1;
-        }
+        this.props.lastId = this.props.quizItems[this.props.quizItems.length - 1].id + 1;
     }
 
     submitHandler = event => {
@@ -64,13 +55,10 @@ class QuizCreator extends React.Component {
         event.preventDefault();
         const { question, option1, option2, option3, option4 } = this.state.formControls;
 
-        if (this.newId === this.props.lastId) {
-            this.newId += 1;
-        }
-
+        console.log('new id: ', this.props.lastId);
         const questionItem = {
             question: question.value,
-            id: this.newId,
+            id: this.props.lastId,
             rightAnswerId: this.state.rightAnswerId,
             answers: [
                 { text: option1.value, id: option1.id },

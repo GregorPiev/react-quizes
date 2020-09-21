@@ -68,6 +68,8 @@ class QuizCreator extends React.Component {
             this.newId += 1;
         }
 
+        console.log('new id: ', this.newId);
+
         const questionItem = {
             question: question.value,
             id: this.newId,

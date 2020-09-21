@@ -36,24 +36,10 @@ function createFormControls() {
 }
 
 class QuizCreator extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rightAnswerId: 1,
-            isFormValid: false,
-            formControls: createFormControls()
-        }
-        this.newId = 0;
-    }
-
-
-    componentDidMount() {
-        this.props.fetchQuizes();
-        if (this.props.quizItems.length === 0) {
-            this.newId = this.props.lastId + 1;
-        } else {
-            this.newId = this.props.quizItems[this.props.quizItems.length - 1].id + 1;
-        }
+    state = {
+        rightAnswerId: 1,
+        isFormValid: false,
+        formControls: createFormControls()
     }
 
     submitHandler = event => {
@@ -63,14 +49,17 @@ class QuizCreator extends React.Component {
     addQuestionHandle = event => {
         event.preventDefault();
         const { question, option1, option2, option3, option4 } = this.state.formControls;
-
-        if (this.newId === this.props.lastId) {
-            this.newId += 1;
+        let newId = 0;
+        if (this.props.quizItems.length === 0) {
+            newId = 1;
+        } else {
+            newId = this.props.quizItems[this.props.quizItems.length - 1].id + 1;
         }
 
+        console.log('new id: ', newId);
         const questionItem = {
             question: question.value,
-            id: this.newId,
+            id: newId,
             rightAnswerId: this.state.rightAnswerId,
             answers: [
                 { text: option1.value, id: option1.id },
@@ -186,7 +175,6 @@ class QuizCreator extends React.Component {
 function mapStateToProps(state) {
     return {
         quiz: state.create.quiz,
-        lastId: state.create.lastId,
         quizes: state.quizes.quizes,
         quizItems: state.quizes.quizItems
     }
