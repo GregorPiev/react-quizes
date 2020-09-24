@@ -44,6 +44,7 @@ export function autoLogout(time) {
 }
 
 export function logout() {
+    console.log('logout 2')
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('expirationDate');
@@ -64,7 +65,7 @@ export function autoLogin() {
                 dispatch(logout());
             } else {
                 dispatch(authSuccess(token));
-                dispatch(autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000));
+                dispatch(autoLogout(expirationDate.getTime() - new Date().getTime()));
             }
 
         }

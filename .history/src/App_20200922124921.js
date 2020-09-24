@@ -20,14 +20,14 @@ class App extends React.Component {
           <Route path="/quiz-creator" component={QuizCreator} />
           <Route path="/quiz/:id" component={Quiz} />
           <Route path="/logout" component={Logout} />
-          <Route path="/" exact component={QuizList} />
+          <Route path="/" component={QuizList} />
           <Redirect to="/" />
 
         </Switch>
         : <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/quiz/:id" component={Quiz} />
-          <Route path="/" exact component={QuizList} />
+          <Route path="/" component={QuizList} />
           <Redirect to="/" />
         </Switch>
     );

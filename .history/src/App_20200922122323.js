@@ -7,11 +7,10 @@ import QuizCreator from './container/QuizCreator/QuizCreator';
 import Auth from './container/Auth/Auth';
 import { connect } from 'react-redux';
 import Logout from './components/Logout/Logout';
-import { autoLogin } from './store/actions/auth';
 
 class App extends React.Component {
   componentDidMount() {
-    this.props.autoLogin();
+    this.props.authLogin();
   }
   render() {
     let routes = (
@@ -19,15 +18,14 @@ class App extends React.Component {
         ? <Switch>
           <Route path="/quiz-creator" component={QuizCreator} />
           <Route path="/quiz/:id" component={Quiz} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/" exact component={QuizList} />
+          <Route path="/" component={QuizList} />
           <Redirect to="/" />
-
+          <Route path="/logout" component={Logout} />
         </Switch>
         : <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/quiz/:id" component={Quiz} />
-          <Route path="/" exact component={QuizList} />
+          <Route path="/" component={QuizList} />
           <Redirect to="/" />
         </Switch>
     );
@@ -46,8 +44,6 @@ function mapStateToProps(state) {
   }
 }
 function mapDispatchToProps(dispatch) {
-  return {
-    autoLogin: () => dispatch(autoLogin())
-  }
+  authLogin: () => dispatch(authLogin())
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(connect(mapStateToProps, null)(App));

@@ -36,15 +36,12 @@ export default class Drawer extends React.Component {
             cls.push(classes.close);
         }
         const links = [
-            { to: '/', label: 'List', exact: true }
-        ];
+            { to: '/', label: 'List', exact: true },
+            { to: '/auth', label: 'Login', exact: false },
+            { to: '/quiz-creator', label: 'Create test', exact: false },
 
-        if (this.props.isAuthenticated) {
-            links.push({ to: '/quiz-creator', label: 'Create test', exact: false })
-            links.push({ to: '/logout', label: 'Logout', exact: false })
-        } else {
-            links.push({ to: '/auth', label: 'Login', exact: false })
-        }
+
+        ];
 
         return (
             <React.Fragment>

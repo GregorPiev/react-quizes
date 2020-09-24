@@ -1,3 +1,4 @@
+import { null } from 'is_js';
 import { AUTH_SUCCESS, AUT_LOGOUT } from '../actions/actionTypes'
 const initialSate = {
     token: null

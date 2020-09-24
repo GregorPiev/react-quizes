@@ -19,15 +19,14 @@ class App extends React.Component {
         ? <Switch>
           <Route path="/quiz-creator" component={QuizCreator} />
           <Route path="/quiz/:id" component={Quiz} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/" exact component={QuizList} />
+          <Route path="/" component={QuizList} />
           <Redirect to="/" />
-
+          <Route path="/logout" component={Logout} />
         </Switch>
         : <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/quiz/:id" component={Quiz} />
-          <Route path="/" exact component={QuizList} />
+          <Route path="/" component={QuizList} />
           <Redirect to="/" />
         </Switch>
     );
@@ -46,8 +45,6 @@ function mapStateToProps(state) {
   }
 }
 function mapDispatchToProps(dispatch) {
-  return {
-    autoLogin: () => dispatch(autoLogin())
-  }
+  autoLogin: () => dispatch(autoLogin())
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

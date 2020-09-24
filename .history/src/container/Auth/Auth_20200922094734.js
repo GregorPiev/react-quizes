@@ -113,7 +113,6 @@ class Auth extends React.Component {
                     errorMessage={control.errorMessage}
                     valid={control.valid}
                     touched={control.touched}
-                    placeholder={control.placeholder}
                     shouldValidate={!!control.validation}
                     onChange={event => this.onChangeHandler(event, controlName)}
                 />

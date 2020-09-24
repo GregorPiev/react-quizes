@@ -21,11 +21,7 @@ class Layout extends React.Component {
     render() {
         return (
             <div className={classes.Layout}>
-                <Drawer
-                    onClose={this.menuCloseHandler}
-                    isOpen={this.state.menu}
-                    isAuthenticated={this.props.isAuthenticated}
-                />
+                <Drawer onClose={this.menuCloseHandler} isOpen={this.state.menu} />
                 <MenuToggle
                     onToggle={this.toggleMenuHandler}
                     isOpen={this.state.menu}

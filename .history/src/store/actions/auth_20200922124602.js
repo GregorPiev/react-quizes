@@ -44,6 +44,7 @@ export function autoLogout(time) {
 }
 
 export function logout() {
+    console.log('logout 2')
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('expirationDate');

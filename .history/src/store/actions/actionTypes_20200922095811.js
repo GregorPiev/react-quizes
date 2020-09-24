@@ -9,5 +9,4 @@ export const Retry_Quiz = 'Retry_Quiz';
 export const Create_Quiz_Question = 'Create_Quiz_Question';
 export const Reset_Quiz_Creation = 'Reset_Quiz_Creation';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
-export const AUT_LOGOUT = 'AUT_LOGOUT';
 
